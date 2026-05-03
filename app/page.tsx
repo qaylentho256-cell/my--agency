@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function Home() {
-  const appName = process.env.NEXT_PUBLIC_APP_NAME ?? "RoofQuick";
+  const appName = process.env.NEXT_PUBLIC_APP_NAME ?? "RoofRapid";
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center p-6">
       <div className="text-center text-white space-y-6 max-w-md">
