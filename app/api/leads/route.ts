@@ -16,9 +16,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
-  const lead = await prisma.lead.create({
-    data: { homeownerName, homeownerEmail, homeownerPhone, address, roofType, damageType, notes },
-  });
-
-  return NextResponse.json(lead, { status: 201 });
+  try {
+    const lead = await prisma.lead.create({
+      data: { homeownerName, homeownerEmail, homeownerPhone, address, roofType, damageType, notes },
+    });
+    return NextResponse.json(lead, { status: 201 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[leads POST]", message);
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

@@ -45,7 +45,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     return NextResponse.json({ lead: updated, analysis });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Failed to generate quote" }, { status: 500 });
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[quote]", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

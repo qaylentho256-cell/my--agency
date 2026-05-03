@@ -39,12 +39,12 @@ export default function LeadForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("Failed to save lead");
       const lead = await res.json();
+      if (!res.ok) throw new Error(lead.error ?? `Server error ${res.status}`);
       setLeadId(lead.id);
       setStep("photos");
-    } catch {
-      setError("Something went wrong. Try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Try again.");
     }
   }
 
@@ -69,10 +69,11 @@ export default function LeadForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ photos }),
       });
-      if (!res.ok) throw new Error("Failed to generate quote");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? `Server error ${res.status}`);
       setStep("done");
-    } catch {
-      setError("Failed to send quote. Check API keys in .env.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
       setStep("photos");
     }
   }
