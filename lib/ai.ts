@@ -1,6 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+function getClient() {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) throw new Error("ANTHROPIC_API_KEY is not set in .env");
+  return new Anthropic({ apiKey });
+}
 
 export interface RoofAnalysis {
   squareFootage: number;
@@ -25,7 +29,7 @@ export async function analyzeRoofPhotos(
     },
   }));
 
-  const response = await client.messages.create({
+  const response = await getClient().messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 1024,
     messages: [
@@ -70,7 +74,7 @@ export async function generateQuoteEmail(
   address: string,
   companyName: string
 ): Promise<{ subject: string; body: string }> {
-  const response = await client.messages.create({
+  const response = await getClient().messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 1024,
     messages: [
