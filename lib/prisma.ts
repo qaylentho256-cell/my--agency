@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 // Fallback so the app works without a .env file (SQLite only)
 if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = "file:./prisma/dev.db";
+  process.env.DATABASE_URL = "file:./dev.db";
 }
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
